@@ -5,14 +5,14 @@ LASTUPDATEFILE="${CURRENTDIR}/.worldometers-corona.log"
 function sendData() {
 	printf "$COUNTRY:\n\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	echo ""
-    printf "Casos totales  : $1\n" >> ${CURRENTDIR}/worldometers-data.tmp
+        printf "Casos totales  : $1\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Casos nuevos   : $2\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Muertes totales: $3\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Muertes nuevas : $4\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Recuperados    : $5\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Casos activos  : $6\n" >> ${CURRENTDIR}/worldometers-data.tmp
-    printf "Casos criticos : $7\n" >> ${CURRENTDIR}/worldometers-data.tmp
-    printf "CT / Promedio  : $8\n" >> ${CURRENTDIR}/worldometers-data.tmp
+        printf "Casos criticos : $7\n" >> ${CURRENTDIR}/worldometers-data.tmp
+        printf "CT/Promedio    : $8\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	cat ${CURRENTDIR}/worldometers-data.tmp
         echo ""
         printf "FUENTE: https://www.worldometers.info/coronavirus/"
