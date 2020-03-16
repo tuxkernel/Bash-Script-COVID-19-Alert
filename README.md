@@ -1,6 +1,6 @@
-# Worldometers COVID-19 Telegram Alert
+# COVID-19 Bash script alert
 
-Telegram alert for total cases of COVID-19, Coronavirus, or SARS-COV-2.
+Bash script alert for total cases of COVID-19, Coronavirus, or SARS-COV-2.
 
 Data source: <https://worldometers.info/coronavirus/>
 
@@ -11,18 +11,8 @@ Data source: <https://worldometers.info/coronavirus/>
 
 ### Variable Settings:
 - `COUNTRY` - Set country and follow Worldometers format (example: Indonesia)
-- `TELEGRAM_API_KEY` - Set your Telegram Bot API KEY
-- `TELEGRAM_CHAT_ID` - Set your Chat ID
 
 ### Run:
 ```
-bash covid-19-telegram-alert.sh
+bash covid-19.sh
 ```
-
-### Crontab Setting:
-```
-* * * * * bash /path-to/covid-19-telegram-alert.sh
-```
-
-### Show Case:
-![Corona Telegram Alert](https://raw.githubusercontent.com/panophan/Worldometers-COVID-19-Telegram-Alert/master/sample-alert.png "COVID-19 telegram alert")
