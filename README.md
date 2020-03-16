@@ -14,5 +14,5 @@ Data source: <https://worldometers.info/coronavirus/>
 
 ### Run:
 ```
-bash covid-19.sh
+bash covid-19
 ```
