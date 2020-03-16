@@ -12,7 +12,6 @@ function sendData() {
 	printf "Recuperados    : $5\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Casos activos  : $6\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Casos criticos : $7\n" >> ${CURRENTDIR}/worldometers-data.tmp
-	#printf "CT / Promedio  : $7\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	cat ${CURRENTDIR}/worldometers-data.tmp
 	echo ""
 	printf "FUENTE: https://www.worldometers.info/coronavirus/"
@@ -30,19 +29,18 @@ ND=$(echo "${RAW}" | head -6 | tail -1 | grep -Po '>\K.*?(?=<)' | sed 's/^ //g' 
 RC=$(echo "${RAW}" | head -7 | tail -1 | grep -Po '>\K.*?(?=<)' | sed 's/^ //g' | sed 's/ $//g' | sed 's/^$/-/g')
 AC=$(echo "${RAW}" | head -9 | tail -1 | grep -Po '>\K.*?(?=<)' | sed 's/^ //g' | sed 's/ $//g' | sed 's/^$/-/g')
 CC=$(echo "${RAW}" | head -10 | tail -1 | grep -Po '>\K.*?(?=<)' | sed 's/^ //g' | sed 's/ $//g' | sed 's/^$/-/g')
-#PM=$(echo "${RAW}" | head -11 | tail -1 | grep -Po '>\K.*?(?=<)' | sed 's/^ //g' | sed 's/ $//g' | sed 's/^$/-/g')
 
 if [[ ! -z ${TC} ]]; then
 	if [[ -f ${LASTUPDATEFILE} ]]; then
-		CMP1=$(printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${PM}" | md5sum | awk '{print $1}')
+		CMP1=$(printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}" | md5sum | awk '{print $1}')
 		CMP2=$(md5sum ${LASTUPDATEFILE} | awk '{print $1}')
 		if [[ ${CMP1} != ${CMP2} ]]; then
-			sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}" "${PM}"
-			printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${PM}" > ${LASTUPDATEFILE}
+			sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}"
+			printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}" > ${LASTUPDATEFILE}
 		fi
 	else
-		sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}" "${PM}"
-		printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${PM}" > ${LASTUPDATEFILE}
+		sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}"
+		printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}" > ${LASTUPDATEFILE}
         rm /home/blackout/.covid-19/.worldometers-corona.log
 	fi
 fi
