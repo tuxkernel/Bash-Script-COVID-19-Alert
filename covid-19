@@ -1,25 +1,23 @@
 #!/bin/bash
 
 COUNTRY="Mexico" # Example: Indonesia (Worldometers format)
-
 CURRENTDIR="$(cd "$(dirname "$0")"; pwd)"
 LASTUPDATEFILE="${CURRENTDIR}/.worldometers-corona.log"
 
 function sendData() {
 	echo ""
-	echo "México:"
+	echo "México"
 	printf "Casos totales  : $1\n" >> ${CURRENTDIR}/worldometers-data.tmp
-	printf "Nuevos casos   : $2\n" >> ${CURRENTDIR}/worldometers-data.tmp
+	printf "Casos nuevos   : $2\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Muertes totales: $3\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Muertes nuevas : $4\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Recuperados    : $5\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	printf "Casos activos  : $6\n" >> ${CURRENTDIR}/worldometers-data.tmp
-	printf "Casos criticos : $7\n" >> ${CURRENTDIR}/worldometers-data.tmp
-	printf "CT / Promedio  : $8\n" >> ${CURRENTDIR}/worldometers-data.tmp
+	printf "Casos críticos : $7\n" >> ${CURRENTDIR}/worldometers-data.tmp
+	printf "CT / 1M        : $8\n" >> ${CURRENTDIR}/worldometers-data.tmp
+	printf "Promedio       : $9\n" >> ${CURRENTDIR}/worldometers-data.tmp
 	echo ""
 	cat ${CURRENTDIR}/worldometers-data.tmp
-	echo ""
-	echo "Fuente: https://www.worldometers.info/coronavirus/"
 	echo ""
 	urldata=$(python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])" "$(cat ${CURRENTDIR}/worldometers-data.tmp)")
 	rm ${CURRENTDIR}/worldometers-data.tmp
@@ -47,19 +45,20 @@ ND=$(cat ${HTMLDUMP} | grep -Po '<td>\K.*?(?=<\/td>)' | head -5 | tail -1)
 RC=$(cat ${HTMLDUMP} | grep -Po '<td>\K.*?(?=<\/td>)' | head -6 | tail -1)
 AC=$(cat ${HTMLDUMP} | grep -Po '<td>\K.*?(?=<\/td>)' | head -7 | tail -1)
 CC=$(cat ${HTMLDUMP} | grep -Po '<td>\K.*?(?=<\/td>)' | head -8 | tail -1)
-PM=$(cat ${HTMLDUMP} | grep -Po '<td>\K.*?(?=<\/td>)' | head -9 | tail -1)
+CT=$(cat ${HTMLDUMP} | grep -Po '<td>\K.*?(?=<\/td>)' | head -9 | tail -1)
+PM=$(cat ${HTMLDUMP} | grep -Po '<td>\K.*?(?=<\/td>)' | head -10 | tail -1)
 
 if [[ ! -z ${TC} ]]; then
 	if [[ -f ${LASTUPDATEFILE} ]]; then
-		CMP1=$(printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${PM}" | md5sum | awk '{print $1}')
+		CMP1=$(printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${CT}|${PM}" | md5sum | awk '{print $1}')
 		CMP2=$(md5sum ${LASTUPDATEFILE} | awk '{print $1}')
 		if [[ ${CMP1} != ${CMP2} ]]; then
-			sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}" "${PM}"
-			printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${PM}" > ${LASTUPDATEFILE}
+			sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}" "${CT}" "${PM}"
+			printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${CT}|${PM}" > ${LASTUPDATEFILE}
 		fi
 	else
-		sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}" "${PM}"
-		printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${PM}" > ${LASTUPDATEFILE}
+		sendData "${TC}" "${NC}" "${TD}" "${ND}" "${RC}" "${AC}" "${CC}" "${CT}" "${PM}"
+		printf "${TC}|${NC}|${TD}|${ND}|${RC}|${AC}|${CC}|${CT}|${PM}" > ${LASTUPDATEFILE}
 		rm /home/blackout/.covid-19/.worldometers-corona.log
 	fi
 fi
